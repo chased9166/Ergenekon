@@ -148,6 +148,7 @@ begin
     begin
       Log('Connected!');
       SendInformation(hMainSocket);
+      Log('Information sent! Reading on socket...');
       ReceiveCommands(hMainSocket);
     end;
     CloseSocket(hMainSocket);
