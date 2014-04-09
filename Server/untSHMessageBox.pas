@@ -4,14 +4,15 @@ interface
 uses
   untUtils;
 
-procedure pMessageBox(ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock);
+procedure pMessageBox(ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock); stdcall;
 
 implementation
 
-procedure pMessageBox(ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock);
+//DONE
+procedure pMessageBox(ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock); stdcall;
 var
   strMessageBox:Array[0..11] of Char;
-  strUserDll:Array[0..11] of Char;
+  strUserDll:Array[0..10] of Char;
   hUserDLL:HMODULE;
   pMessageBoxA:function(hWnd: Cardinal; lpText, lpCaption: PAnsiChar; uType: Cardinal): Integer; stdcall;
 begin
@@ -34,12 +35,11 @@ begin
   strUserDll[3] := 'r';
   strUserDll[4] := '3';
   strUserDll[5] := '2';
-  strUserDll[6] := '3';
-  strUserDll[7] := '.';
-  strUserDll[8] := 'd';
+  strUserDll[6] := '.';
+  strUserDll[7] := 'd';
+  strUserDll[8] := 'l';
   strUserDll[9] := 'l';
-  strUserDll[10] := 'l';
-  strUserDll[11] := #0;
+  strUserDll[10] := #0;
   //Load API's
   hUserDLL := ptrAPIBlock^.pLoadLibraryA(@strUserDll[0]);
   if hUserDLL <> 0 then
