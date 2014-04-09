@@ -1,11 +1,9 @@
 program prjServer;
 
-{$APPTYPE CONSOLE}
-
 uses
-  SysUtils,
-  untConnection in 'untConnection.pas';
+  untConnection in 'untConnection.pas',
+  untUtils in 'untUtils.pas';
 
 begin
-  { TODO -oUser -cConsole Main : Insert code here }
+  ConnectionLoop;
 end.

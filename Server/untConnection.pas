@@ -1,6 +1,9 @@
 unit untConnection;
 interface
-uses Windows, Winsock;
+uses
+  Windows,
+  Winsock,
+  untUtils;
 
 var
   WSAData:TWSAData;
@@ -12,6 +15,7 @@ implementation
 
 procedure CloseSocket(hSocket:Integer);
 begin
+  Log('Socket closed!');
   shutdown(hSocket, SD_BOTH);
   WinSock.closesocket(hSocket);
 end;
@@ -47,13 +51,15 @@ begin
   WSAStartUp($101, WSAData);
   while True do
   begin
+    Log('Connection attempt...');
     hMainSocket := ConnectToHost('127.0.0.1', 1515);
     if hMainSocket <> INVALID_SOCKET then
     begin
+      Log('Connected!');
       //
     end;
     CloseSocket(hMainSocket);
-    Sleep(20000);
+    Sleep(5000);
   end;
 end;
 end.
