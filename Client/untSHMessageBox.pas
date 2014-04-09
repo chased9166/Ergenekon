@@ -5,7 +5,7 @@ uses
   untUtils;
 
 procedure pMessageBox(ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock); stdcall;
-
+procedure pMessageBox_END();
 implementation
 
 //DONE

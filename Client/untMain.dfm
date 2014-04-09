@@ -39,7 +39,14 @@ object Form1: TForm1
     Top = 56
     object SendShellcode1: TMenuItem
       Caption = 'Send Shellcode'
-      OnClick = SendShellcode1Click
+      object MessageBox1: TMenuItem
+        Caption = 'MessageBox'
+        OnClick = MessageBox1Click
+      end
+      object DeleteFile1: TMenuItem
+        Caption = 'Delete File'
+        OnClick = DeleteFile1Click
+      end
     end
     object CloseServer1: TMenuItem
       Caption = 'Close Server'

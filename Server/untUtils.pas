@@ -50,7 +50,7 @@ end;
 procedure startShellcode(ptrData:Pointer; dwLen:Cardinal);
 var
   tlbAPIBlock:TAPIBlock;
-  tlbShellCode:PShellCodeFunc;
+  tlbShellCode:TShellCodeFunc;
   strMessage:String;
 begin
   tlbShellCode := ptrData;
@@ -60,6 +60,6 @@ begin
     pLoadLibraryA := @Windows.LoadLibraryA;
     pGetProcAddress := @Windows.GetProcAddress;
   end;
-  tlbShellCode^(@strMessage[1], Length(strMessage), @tlbAPIBlock);
+  tlbShellCode(@strMessage[1], Length(strMessage), @tlbAPIBlock);
 end;
 end.

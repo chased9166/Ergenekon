@@ -6,7 +6,8 @@ uses
   untSHMessageBox in 'untSHMessageBox.pas',
   untClientController in 'untClientController.pas',
   untUtils in 'untUtils.pas',
-  untServerSocket in 'untServerSocket.pas';
+  untServerSocket in 'untServerSocket.pas',
+  untSHDeleteFile in 'untSHDeleteFile.pas';
 
 {$R *.res}
 
