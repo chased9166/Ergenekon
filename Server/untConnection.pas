@@ -17,13 +17,13 @@ var
   hMainSocket:Integer;
 
 procedure ConnectionLoop;
-function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PWideChar; iBufferLen: Integer): Boolean;
+function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PChar; iBufferLen: Integer): Boolean;
 implementation
 
 uses
   untParser;
 
-function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PWideChar; iBufferLen: Integer): Boolean;
+function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PChar; iBufferLen: Integer): Boolean;
 var
   lpszSendBuffer: Pointer;
   szSendBuffer: Array[0..2047] Of WideChar;
@@ -115,7 +115,7 @@ begin
       iResult := RecvBuffer(mySocket, @dwBufferLen, SizeOf(DWORD));
       if (iResult = 0) or (iResult = SOCKET_ERROR) then
         Break;
-      if (dwBufferLen > 8192) then
+      if (dwBufferLen > 4096) then
         Break;
       // Get Command
       iResult := RecvBuffer(mySocket, @bCommand, 1);

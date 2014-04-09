@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object ListView1: TListView
@@ -29,6 +30,7 @@ object Form1: TForm1
       end>
     ReadOnly = True
     RowSelect = True
+    PopupMenu = PopupMenu1
     TabOrder = 0
     ViewStyle = vsReport
   end
@@ -37,9 +39,11 @@ object Form1: TForm1
     Top = 56
     object SendShellcode1: TMenuItem
       Caption = 'Send Shellcode'
+      OnClick = SendShellcode1Click
     end
     object CloseServer1: TMenuItem
       Caption = 'Close Server'
+      OnClick = CloseServer1Click
     end
   end
 end
