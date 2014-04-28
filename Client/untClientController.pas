@@ -8,11 +8,13 @@ uses
   winsock,
   Windows,
   ComCtrls,
+  untFilemanager,
   Classes;
 
 type
    TGUI = class
     lstItem               :TListItem;
+    frmFilemanager        :TForm2;
    end;
 
 type
@@ -23,11 +25,14 @@ type
     procedure GetPacket;
     procedure Termination(Sender: TObject);
     procedure ParsePacket(mBuff:Pointer; dwLen:Integer; bCMD:Byte);
+    procedure ProcessGUI;
   protected
     procedure Execute; override;
   public
     GUI :TGUI;
     mySocket:Integer;
+    fBuff:Pointer;
+    currOp:Byte;
     constructor Create(CreateSuspended: Boolean);
   end;
   
@@ -56,17 +61,61 @@ begin
   end;
 end;
 
+Function Explode(sDelimiter: String; sSource: String): TStringList;
+Var
+  c: Word;
+Begin
+  Result := TStringList.Create;
+  C := 0;
+  While sSource <> '' Do
+  Begin
+    If Pos(sDelimiter, sSource) > 0 Then
+    Begin
+      Result.Add(Copy(sSource, 1, Pos(sDelimiter, sSource) - 1 ));
+      Delete(sSource, 1, Length(Result[c]) + Length(sDelimiter));
+    End
+    Else
+    Begin
+      Result.Add(sSource);
+      sSource := ''
+    End;
+    Inc(c);
+  End;
+End;
+
+procedure TClientThread.ProcessGUI;
+var
+  lstTokens:TStringList;
+  i:integer;
+begin
+  case currOp of
+    0:
+      begin
+        GUI.lstItem := Form1.ListView1.Items.Add;
+        GUI.lstItem.Caption := 'localhost';
+        GUI.lstItem.SubItems.Add(PChar(fBuff));
+        GUI.lstItem.SubItems.Objects[0] := Self;
+      end;
+    2:
+      begin
+        lstTokens := Explode('|' , PChar(fBuff));
+        if Assigned(GUI.frmFilemanager) then
+        begin
+          GUI.frmFilemanager.ComboBox1.Clear;
+          for i := 0 to lstTokens.Count -1 do
+          begin
+          GUI.frmFilemanager.ComboBox1.AddItem(lstTokens[i],nil);
+          end;
+        end;
+      end;
+  end;
+end;
+
 procedure TClientThread.ParsePacket(mBuff:Pointer; dwLen:Integer; bCMD:Byte);
 begin
-  case bCMD of
-   0:
-    begin
-      GUI.lstItem := Form1.ListView1.Items.Add;
-      GUI.lstItem.Caption := 'localhost';
-      GUI.lstItem.SubItems.Add(PChar(mBuff));
-      GUI.lstItem.SubItems.Objects[0] := Self;
-    end;
-  end;
+  fBuff := mBuff;
+  currOp := bCMD;
+  Synchronize(ProcessGUI);
 end;
 
 procedure TClientThread.GetPacket;

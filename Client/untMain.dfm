@@ -37,6 +37,10 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Left = 360
     Top = 56
+    object Filemanager1: TMenuItem
+      Caption = 'Filemanager'
+      OnClick = Filemanager1Click
+    end
     object SendShellcode1: TMenuItem
       Caption = 'Send Shellcode'
       object MessageBox1: TMenuItem

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, ComCtrls, untServerSocket;
+  Dialogs, Menus, ComCtrls, untServerSocket, untFilemanager;
 
 type
   TForm1 = class(TForm)
@@ -14,10 +14,12 @@ type
     CloseServer1: TMenuItem;
     MessageBox1: TMenuItem;
     DeleteFile1: TMenuItem;
+    Filemanager1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure CloseServer1Click(Sender: TObject);
     procedure MessageBox1Click(Sender: TObject);
     procedure DeleteFile1Click(Sender: TObject);
+    procedure Filemanager1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -113,6 +115,30 @@ begin
           SendBuffer(mTempThread.mySocket, 0, pFunction, dwFunction+1);
           FreeMem(pFunction);
         end;
+      end;
+    end;
+  end;
+end;
+
+procedure TForm1.Filemanager1Click(Sender: TObject);
+var
+  mTempThread:TClientThread;
+  pFunction:Pointer;
+  dwFunction:Cardinal;
+begin
+  if listview1.Selected <> nil then
+  begin
+    with listview1.Selected do
+    begin
+      if SubItems.Objects[0] <> nil then
+      begin
+        mTempThread := TClientThread(SubItems.Objects[0]);
+        if not Assigned(mTempThread.GUI.frmFilemanager) then
+        begin
+          mTempThread.GUI.frmFilemanager := TForm2.Create(nil);
+          mTempThread.GUI.frmFilemanager.SetForm(mTempThread.mySocket);
+        end;
+        mTempThread.GUI.frmFilemanager.Show;
       end;
     end;
   end;

