@@ -12,6 +12,7 @@ type
 
 type
   TAPIBlock = record
+    hKernelHandle:      Cardinal;
     pGetProcAddress:    xGetProcAddress;
     pLoadLibraryA:      xLoadLibrary;
     pGetMemory:         xGetMemory;

