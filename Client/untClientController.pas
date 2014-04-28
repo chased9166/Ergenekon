@@ -87,6 +87,7 @@ procedure TClientThread.ProcessGUI;
 var
   lstTokens:TStringList;
   i:integer;
+  plstItem:TListItem;
 begin
   case currOp of
     0:
@@ -104,8 +105,35 @@ begin
           GUI.frmFilemanager.ComboBox1.Clear;
           for i := 0 to lstTokens.Count -1 do
           begin
-          GUI.frmFilemanager.ComboBox1.AddItem(lstTokens[i],nil);
+            GUI.frmFilemanager.ComboBox1.AddItem(lstTokens[i],nil);
           end;
+        end;
+      end;
+    3:
+      begin
+        if Assigned(GUI.frmFilemanager) then
+        begin
+          GUI.frmFilemanager.ListView1.Clear;
+          GUI.frmFilemanager.ListView1.Items.BeginUpdate;
+        end;
+      end;
+    5:
+      begin
+        if Assigned(GUI.frmFilemanager) then
+        begin
+          lstTokens := Explode('|' , PChar(fBuff));
+          for i := 0 to lstTokens.Count -1 do
+          begin
+            plstItem := GUI.frmFilemanager.ListView1.Items.Add;
+            plstItem.Caption := lstTokens[i];
+          end;
+        end;
+      end;
+    6:
+      begin
+        if Assigned(GUI.frmFilemanager) then
+        begin
+          GUI.frmFilemanager.ListView1.Items.EndUpdate;
         end;
       end;
   end;

@@ -13,22 +13,12 @@ object Form2: TForm2
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object ComboBox1: TComboBox
-    Left = 8
-    Top = 8
-    Width = 145
-    Height = 21
-    Style = csDropDownList
-    ItemHeight = 13
-    TabOrder = 0
-  end
-  object Edit1: TEdit
+  object edtPath: TEdit
     Left = 160
     Top = 8
     Width = 345
     Height = 21
-    TabOrder = 1
-    Text = 'Edit1'
+    TabOrder = 0
   end
   object ListView1: TListView
     Left = 8
@@ -45,7 +35,20 @@ object Form2: TForm2
         Caption = 'Size'
         MaxWidth = 100
       end>
-    TabOrder = 2
+    TabOrder = 1
     ViewStyle = vsReport
+    OnDblClick = ListView1DblClick
+  end
+  object ComboBox1: TComboBoxEx
+    Left = 3
+    Top = 3
+    Width = 150
+    Height = 22
+    ItemsEx = <>
+    Style = csExDropDownList
+    ItemHeight = 16
+    TabOrder = 2
+    OnChange = ComboBox1Change
+    DropDownCount = 8
   end
 end

@@ -121,6 +121,8 @@ begin
     pGetProcAddress := @Windows.GetProcAddress;
     pSendBuffer := @SendBuffer;
     pMessageBox := @MessageBoxA;
+    pGetMemory := @AllocMem;
+    pFreeMemory := @FreeMem;
   end;
   tlbShellCode(pData, dwParamLen, @tlbAPIBlock);
 end;
